@@ -32,7 +32,6 @@ public abstract class Charactor : MonoBehaviour
 
     private void Start()
     {
-        curHp = maxHp;
     }
 
     public abstract void Attack();
