@@ -1,18 +1,52 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class UIManager : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+    [SerializeField] private GameObject settingPanel;
+    [SerializeField] private GameObject creditPanel;
+    [SerializeField] private GameObject exitPanel;
+
+    public void OnClickStart()
     {
-        
+        SceneManager.LoadScene("Tutorial");        
     }
 
-    // Update is called once per frame
-    void Update()
+    public void OnClickSetting() 
     {
-        
+        settingPanel.SetActive(true);
+    }
+
+    public void OffClickSetting()
+    {
+        settingPanel.SetActive(false);
+    }
+
+    public void OnClickCredit()
+    {
+        creditPanel.SetActive(true);
+    }
+
+    public void OffClickCredit()
+    {
+        creditPanel.SetActive(false);
+    }
+
+    public void OnClickExit()
+    {
+        exitPanel.SetActive(true);
+    }
+
+    public void OffClickExit()
+    {
+        exitPanel.SetActive(false);
+    }
+
+    public void GameExit()
+    {
+        Debug.Log("GameExit");
+        Application.Quit();
     }
 }
