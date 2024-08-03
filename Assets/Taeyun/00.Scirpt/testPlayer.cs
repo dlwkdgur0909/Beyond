@@ -15,4 +15,9 @@ public class testPlayer : MonoBehaviour
     {
         
     }
+
+    public void Attack()
+    {
+
+    }
 }
