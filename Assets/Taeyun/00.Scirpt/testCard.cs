@@ -1,18 +1,16 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class testCard : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
-    {
-        
-    }
+    [SerializeField] private string cardName;
+    public string CardName => cardName;
 
-    // Update is called once per frame
-    void Update()
-    {
-        
-    }
+    [SerializeField] private CardType cardType;
+    public CardType CardType => cardType;
+
+    [SerializeField] private Action cardAbility;
+    public Action CardAbility => cardAbility;
 }
