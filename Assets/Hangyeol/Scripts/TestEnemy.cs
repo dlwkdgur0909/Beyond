@@ -1,40 +1,34 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
-public class TestEnemy : Charactor
+public class TestEnemy : Character
 {
-    // Start is called before the first frame update
     void Start()
     {
-        
+        curHp = maxHp;
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
     }
 
     public override void Attack()
     {
-        throw new System.NotImplementedException();
+        // 적의 공격 로직 구현
     }
 
     public override void SpecialMove()
     {
-        throw new System.NotImplementedException();
+        // 적의 필살기 구현
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
         {
-            TestEnemy player = other.GetComponent<TestEnemy>();
+            Knight player = other.GetComponent<Knight>();
             if (player != null)
             {
-                float damage = dmg * GetAttributeEffectiveness(attribute, player.attribute);
-                player.TakeDamage(damage);
+                DealDamage(player);
             }
         }
     }
