@@ -42,34 +42,45 @@ public class CardManager : MonoBehaviour
     [SerializeField] private List<testCard> currentCard = new List<testCard>();
 
     #region GetCard
-    public void GetCard(int numberOfCards)
+    public void GetCard(int cardCount)
     {
-        int characterCount = 3;
-        List<string> cards = new List<string>();
+        int ranCardType;
+        int ranChar;
 
-        for (int i = 1; i <= characterCount; i++)
+        while(cardCount <= 0)
         {
-            for (int j = 0; j < numberOfCards; j++)
+            // 랜덤한 캐릭터
+            ranChar = Random.Range(0, StageManager.Instance.Players.Count);
+
+            // 랜덤 카드 타입
+            ranCardType = Random.Range(0, 2);
+            
+            if(ranCardType == 0)
             {
-                cards.Add($"Character {i} Attack");
-                cards.Add($"Character {i} Defense");
+                currentCard.Add(attackCards[ranChar]);
             }
+            else if(ranCardType == 1)
+            {
+                currentCard.Add(defenseCards[ranChar]);
+            }
+
+            cardCount--;
         }
 
         // Shuffle the cards list
-        for (int i = 0; i < cards.Count; i++)
-        {
-            string temp = cards[i];
-            int randomIndex = Random.Range(0, cards.Count);
-            cards[i] = cards[randomIndex];
-            cards[randomIndex] = temp;
-        }
+        //for (int i = 0; i < cards.Count; i++)
+        //{
+        //    string temp = cards[i];
+        //    int randomIndex = Random.Range(0, cards.Count);
+        //    cards[i] = cards[randomIndex];
+        //    cards[randomIndex] = temp;
+        //}
 
-        // Print the shuffled cards
-        for (int i = 0; i < cards.Count; i++)
-        {
-            Debug.Log(cards[i]);
-        }
+        //// Print the shuffled cards
+        //for (int i = 0; i < cards.Count; i++)
+        //{
+        //    Debug.Log(cards[i]);
+        //}
     }
     #endregion
 
