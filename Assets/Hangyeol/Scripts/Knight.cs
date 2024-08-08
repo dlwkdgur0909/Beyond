@@ -3,17 +3,18 @@ using UnityEngine;
 
 public class Knight : Character
 {
-    void Start()
-    {
-        curHp = maxHp;
-     
-    }
+
 
     void Update()
     {
         if (Input.GetKeyDown(KeyCode.Space))
         {
             Attack();
+        }
+
+        if (curHp <= 0)
+        {
+            Destroy(gameObject);
         }
     }
 

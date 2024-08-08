@@ -37,19 +37,30 @@ public abstract class Character : MonoBehaviour
 
     [Header("UI")]
     public TextMeshProUGUI level;
+    public Slider hpSlider;
 
-    private void Start()
+    protected virtual void Start()
     {
         curHp = maxHp;
+        UpdateHpUI();
     }
 
     private void Update()
     {
+        // 예시로 HP 바를 실시간으로 업데이트
+        UpdateHpUI();
     }
 
     public void TakeDamage(float amount)
     {
         curHp -= amount;
+        curHp = Mathf.Clamp(curHp, 0, maxHp); // HP가 0 이하로 떨어지지 않도록 제한
+        UpdateHpUI();
+
+        if (curHp <= 0)
+        {
+            OnDeath();
+        }
     }
 
     public void DealDamage(Character target)
@@ -62,7 +73,19 @@ public abstract class Character : MonoBehaviour
     public abstract void Attack();
     public abstract void SpecialMove();
 
-    private void HpBar()
+    protected virtual void OnDeath()
     {
+        // 사망 시 처리 로직 (예: 캐릭터 비활성화, 사망 애니메이션 실행 등)
+        Debug.Log($"{gameObject.name} has died.");
+    }
+
+    private void UpdateHpUI()
+    {
+        if (hpSlider != null)
+        {
+            hpSlider.value = curHp / maxHp;
+        }
+
+  
     }
 }

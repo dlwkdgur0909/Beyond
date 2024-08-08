@@ -2,13 +2,14 @@ using UnityEngine;
 
 public class TestEnemy : Character
 {
-    void Start()
-    {
-        curHp = maxHp;
-    }
+
 
     void Update()
     {
+        if(curHp <= 0)
+        {
+            Destroy(gameObject);
+        }
     }
 
     public override void Attack()
