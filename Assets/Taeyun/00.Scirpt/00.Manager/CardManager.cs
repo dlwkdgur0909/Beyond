@@ -1,12 +1,24 @@
-using System.Collections;
+
 using System.Collections.Generic;
 using UnityEngine;
 
 public enum CardType
 {
     Attack,
-    Defense,
-    Ultimate
+    Defense
+}
+[System.Serializable]
+public class CardInfo
+{
+    public GameObject cardObject;
+    public testCard cardScript;
+}
+
+[System.Serializable]
+public class CharCardData
+{
+    public CardInfo AttackCard;
+    public CardInfo DefenseCard;
 }
 
 public class CardManager : MonoBehaviour
@@ -26,63 +38,91 @@ public class CardManager : MonoBehaviour
     }
     private static CardManager instance;
 
-    [Header("공격카드")]
-    [SerializeField] private List<testCard> attackCards = new List<testCard>();
-
-    [Header("방어카드")]
-    [SerializeField] private List<testCard> defenseCards = new List<testCard>();
-
-    [Header("궁극기카드")]
-    [SerializeField] private List<testCard> ultimateCards = new List<testCard>();
+    [Header("캐릭터 카드 리스트")]
+    [SerializeField] private List<CharCardData> charCardData;
 
     [Header("선택한 카드")]
     [SerializeField] private List<testCard> selectCards = new List<testCard>();
 
     [Header("현재 가지고 있는 카드")]
-    [SerializeField] private List<testCard> currentCard = new List<testCard>();
+    [SerializeField] private List<CardInfo> currentCard = new List<CardInfo>();
+    public List<CardInfo> CurrentCard => currentCard;
+
+    [Header("카드 포지션")]
+    [SerializeField] private List<Transform> cardPos = new List<Transform>();
+    [SerializeField] private Transform canvas;
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            GetCard();
+        }
+    }
+
+    private void CardInit()
+    {
+        foreach(CharCardData card in charCardData)
+        {
+            //charCardDa
+        }
+    }
 
     #region GetCard
-    public void GetCard(int cardCount)
+    public void GetCard()
     {
         int ranCardType;
         int ranChar;
+        List<CardInfo> cardInfoList = new List<CardInfo>();
 
-        while(cardCount <= 0)
+        // 현재 가지고 있는 카드 삭제
+        foreach (CardInfo spawnedCard in currentCard)
         {
-            // 랜덤한 캐릭터
+            Destroy(spawnedCard.cardObject);
+        }
+        currentCard.Clear();
+
+        // 랜덤한 캐릭터의 카드 생성
+        for (int i = 0; i < 7; i++) // 최대 7개의 카드를 생성
+        {
             ranChar = Random.Range(0, StageManager.Instance.Players.Count);
+            ranCardType = Random.Range(0, 2);  // Attack 또는 Defense 카드 선택
 
-            // 랜덤 카드 타입
-            ranCardType = Random.Range(0, 2);
-            
-            if(ranCardType == 0)
+            if (ranCardType == (int)CardType.Attack)
             {
-                currentCard.Add(attackCards[ranChar]);
+                cardInfoList.Add(charCardData[ranChar].AttackCard);
             }
-            else if(ranCardType == 1)
+            else if (ranCardType == (int)CardType.Defense)
             {
-                currentCard.Add(defenseCards[ranChar]);
+                cardInfoList.Add(charCardData[ranChar].DefenseCard);
             }
-
-            cardCount--;
         }
 
-        // Shuffle the cards list
-        //for (int i = 0; i < cards.Count; i++)
-        //{
-        //    string temp = cards[i];
-        //    int randomIndex = Random.Range(0, cards.Count);
-        //    cards[i] = cards[randomIndex];
-        //    cards[randomIndex] = temp;
-        //}
+        // 카드 리스트 셔플
+        Shuffle(cardInfoList);
 
-        //// Print the shuffled cards
-        //for (int i = 0; i < cards.Count; i++)
-        //{
-        //    Debug.Log(cards[i]);
-        //}
+        // 카드 생성 및 위치 설정
+        for (int i = 0; i < cardInfoList.Count; i++)
+        {
+            GameObject cardObj = Instantiate(cardInfoList[i].cardObject, cardPos[i].position, Quaternion.identity);
+            cardObj.transform.SetParent(canvas.transform);
+            currentCard.Add(cardInfoList[i]);
+        }
     }
+
+    private void Shuffle<T>(List<T> list)
+    {
+        for (int i = 0; i < list.Count; i++)
+        {
+            int randIndex = Random.Range(i, list.Count);
+            T temp = list[i];
+            list[i] = list[randIndex];
+            list[randIndex] = temp;
+        }
+    }
+
     #endregion
+
 
     #region SelectCard
     public void SelectCard(int index)
@@ -94,5 +134,16 @@ public class CardManager : MonoBehaviour
     public void MoveCard()
     {
         selectCards.Add(null);
+    }
+
+    public void RemoveCard(testCard card)
+    {
+        foreach(CardInfo curCard in currentCard)
+        {
+            if(card == curCard.cardScript)
+            {
+                currentCard.Remove(curCard);
+            }
+        }
     }
 }
