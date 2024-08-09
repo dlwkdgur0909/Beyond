@@ -6,14 +6,16 @@ using System.Collections.Generic;
 [System.Serializable]
 public class CharacterData
 {
-    public string name;
+    public string name; //카드 이름
     public float weight; // CharacterData 객체 내부에 가중치를 정의합니다.
+    public GameObject card; //카드
     // 추가적인 필드들을 여기에 정의할 수 있습니다.
 
-    public CharacterData(string name, float weight)
+    public CharacterData(string name,float weight, GameObject card)
     {
         this.name = name;
         this.weight = weight;
+        this.card = card;
     }
 }
 
@@ -72,28 +74,26 @@ public static class WeightedItemExtensions
 
 public class Draw : MonoBehaviour
 {
+    [SerializeField] private GameObject oneDrawScreen;
     [SerializeField] private GameObject tenDrawScreen;
 
+    public List<CharacterData> cardList = new List<CharacterData>();
     void Start()
     {
-        // CharacterData 객체를 담는 리스트 생성
-        List<CharacterData> characterList = new List<CharacterData>
-        {
-            new CharacterData("Alice", 0.4f),
-            new CharacterData("Bob", 0.3f),
-            new CharacterData("Charlie", 0.3f)
-        };
-
         // CharacterData 리스트를 WeightedItem 리스트로 변환
-        List<WeightedItem<CharacterData>> weightedCharacterList = characterList.ToWeightedItemList(character => character.weight);
+        List<WeightedItem<CharacterData>> weightedCharacterList = cardList.ToWeightedItemList(character => character.weight);
 
         // 가중치에 따라 무작위로 CharacterData 객체를 선택합니다.
         CharacterData selectedCharacter = WeightedRandomUtility.GetWeightedRandom(weightedCharacterList);
 
         // 선택된 CharacterData 객체 정보 출력
-        Debug.Log("Selected Character: " + selectedCharacter.name);
+        Debug.Log(selectedCharacter.name);
     }
 
+    public void OneDraw()
+    {
+        oneDrawScreen.SetActive(true);
+    }
     public void TenDraw()
     {
         tenDrawScreen.SetActive(true);
