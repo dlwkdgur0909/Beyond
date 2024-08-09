@@ -1,6 +1,7 @@
 using UnityEngine;
 using System;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 // CharacterData 클래스 정의
 [System.Serializable]
@@ -76,26 +77,74 @@ public class Draw : MonoBehaviour
 {
     [SerializeField] private GameObject oneDrawScreen;
     [SerializeField] private GameObject tenDrawScreen;
+    [SerializeField] private GridLayoutGroup oneDrawLayout;
+    [SerializeField] private GridLayoutGroup tenDrawLayout;
 
     public List<CharacterData> cardList = new List<CharacterData>();
-    void Start()
+
+    private void Awake()
+    {
+        // LayoutGroup 컴포넌트를 자식 오브젝트에서 찾도록 수정
+        oneDrawLayout = oneDrawScreen.GetComponentInChildren<GridLayoutGroup>();
+        tenDrawLayout = tenDrawScreen.GetComponentInChildren<GridLayoutGroup>();
+    }
+
+    private void Update()
+    {
+        // 마우스 좌클릭을 감지
+        if (Input.GetMouseButtonDown(0))
+        {
+            // 화면이 켜져 있는지 확인하고, 켜져 있으면 끔
+            if (oneDrawScreen.activeSelf)
+            {
+                oneDrawScreen.SetActive(false);
+                DestroyAllChildren(oneDrawLayout.transform);
+            }
+            else if (tenDrawScreen.activeSelf)
+            {
+                tenDrawScreen.SetActive(false);
+                DestroyAllChildren(tenDrawLayout.transform);
+            }
+        }
+    }
+
+    private void RandomDraw(GridLayoutGroup layoutGroup)
     {
         // CharacterData 리스트를 WeightedItem 리스트로 변환
         List<WeightedItem<CharacterData>> weightedCharacterList = cardList.ToWeightedItemList(character => character.weight);
 
-        // 가중치에 따라 무작위로 CharacterData 객체를 선택합니다.
+        // 가중치에 따라 무작위로 CharacterData 객체를 선택
         CharacterData selectedCharacter = WeightedRandomUtility.GetWeightedRandom(weightedCharacterList);
 
         // 선택된 CharacterData 객체 정보 출력
-        Debug.Log(selectedCharacter.name);
+        //Debug.Log(selectedCharacter.name);
+
+        // 선택된 카드를 지정된 LayoutGroup의 자식으로 생성
+        GameObject newCard = Instantiate(selectedCharacter.card, layoutGroup.transform);
     }
 
     public void OneDraw()
     {
         oneDrawScreen.SetActive(true);
+        RandomDraw(oneDrawLayout);  // oneDrawLayout에 카드 배치
     }
+
     public void TenDraw()
     {
         tenDrawScreen.SetActive(true);
+        for (int i = 0; i < 10; ++i)
+        {
+            RandomDraw(tenDrawLayout);  // tenDrawLayout에 카드 배치
+        }
+    }
+
+    private void DestroyAllChildren(Transform parent)
+    {
+        // 부모 객체의 모든 자식들을 파괴
+        foreach (Transform child in parent)
+        {
+            Destroy(child.gameObject);
+        }
     }
 }
+
