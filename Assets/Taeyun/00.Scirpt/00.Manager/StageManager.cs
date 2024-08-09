@@ -28,6 +28,11 @@ public class StageManager : MonoBehaviour
     public List<testPlayer> Players => players;
     [SerializeField] private List<testMonster> testMonster = new List<testMonster>();
 
+    private void Awake()
+    {
+        instance = this;
+    }
+
     private void Start()
     {
         NextStage();
