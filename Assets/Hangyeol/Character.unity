@@ -253,6 +253,7 @@ MonoBehaviour:
   specialMove: 0
   isSpecialMove: 0
   level: {fileID: 0}
+  hpSlider: {fileID: 3900763338756929164, guid: aeb7b0978ede88c4aa488d4d0c544b70, type: 3}
 --- !u!23 &739324125
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -537,6 +538,7 @@ MonoBehaviour:
   specialMove: 0
   isSpecialMove: 0
   level: {fileID: 0}
+  hpSlider: {fileID: 3900763338756929164, guid: aeb7b0978ede88c4aa488d4d0c544b70, type: 3}
 --- !u!1 &1732436114
 GameObject:
   m_ObjectHideFlags: 0
@@ -651,7 +653,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3d6cd3057445ad145a4b1d96bed289a2, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  m_goPrefabs: {fileID: 0}
+  m_goPrefabs: {fileID: 3900763338756929164, guid: aeb7b0978ede88c4aa488d4d0c544b70, type: 3}
 --- !u!1 &2054265888
 GameObject:
   m_ObjectHideFlags: 0
