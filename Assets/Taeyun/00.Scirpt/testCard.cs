@@ -13,4 +13,10 @@ public class testCard : MonoBehaviour
 
     [SerializeField] private Action cardAbility;
     public Action CardAbility => cardAbility;
+
+    public void DeleteCard()
+    {
+        CardManager.Instance.RemoveCard(this);
+        Destroy(gameObject);
+    }
 }

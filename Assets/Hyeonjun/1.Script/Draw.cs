@@ -1,19 +1,22 @@
 using UnityEngine;
 using System;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 // CharacterData 클래스 정의
 [System.Serializable]
 public class CharacterData
 {
-    public string name;
+    public string name; //카드 이름
     public float weight; // CharacterData 객체 내부에 가중치를 정의합니다.
+    public GameObject card; //카드
     // 추가적인 필드들을 여기에 정의할 수 있습니다.
 
-    public CharacterData(string name, float weight)
+    public CharacterData(string name,float weight, GameObject card)
     {
         this.name = name;
         this.weight = weight;
+        this.card = card;
     }
 }
 
@@ -72,30 +75,76 @@ public static class WeightedItemExtensions
 
 public class Draw : MonoBehaviour
 {
+    [SerializeField] private GameObject oneDrawScreen;
     [SerializeField] private GameObject tenDrawScreen;
+    [SerializeField] private GridLayoutGroup oneDrawLayout;
+    [SerializeField] private GridLayoutGroup tenDrawLayout;
 
-    void Start()
+    public List<CharacterData> cardList = new List<CharacterData>();
+
+    private void Awake()
     {
-        // CharacterData 객체를 담는 리스트 생성
-        List<CharacterData> characterList = new List<CharacterData>
+        // LayoutGroup 컴포넌트를 자식 오브젝트에서 찾도록 수정
+        oneDrawLayout = oneDrawScreen.GetComponentInChildren<GridLayoutGroup>();
+        tenDrawLayout = tenDrawScreen.GetComponentInChildren<GridLayoutGroup>();
+    }
+
+    private void Update()
+    {
+        // 마우스 좌클릭을 감지
+        if (Input.GetMouseButtonDown(0))
         {
-            new CharacterData("Alice", 0.4f),
-            new CharacterData("Bob", 0.3f),
-            new CharacterData("Charlie", 0.3f)
-        };
+            // 화면이 켜져 있는지 확인하고, 켜져 있으면 끔
+            if (oneDrawScreen.activeSelf)
+            {
+                oneDrawScreen.SetActive(false);
+                DestroyAllChildren(oneDrawLayout.transform);
+            }
+            else if (tenDrawScreen.activeSelf)
+            {
+                tenDrawScreen.SetActive(false);
+                DestroyAllChildren(tenDrawLayout.transform);
+            }
+        }
+    }
 
+    private void RandomDraw(GridLayoutGroup layoutGroup)
+    {
         // CharacterData 리스트를 WeightedItem 리스트로 변환
-        List<WeightedItem<CharacterData>> weightedCharacterList = characterList.ToWeightedItemList(character => character.weight);
+        List<WeightedItem<CharacterData>> weightedCharacterList = cardList.ToWeightedItemList(character => character.weight);
 
-        // 가중치에 따라 무작위로 CharacterData 객체를 선택합니다.
+        // 가중치에 따라 무작위로 CharacterData 객체를 선택
         CharacterData selectedCharacter = WeightedRandomUtility.GetWeightedRandom(weightedCharacterList);
 
         // 선택된 CharacterData 객체 정보 출력
-        Debug.Log("Selected Character: " + selectedCharacter.name);
+        //Debug.Log(selectedCharacter.name);
+
+        // 선택된 카드를 지정된 LayoutGroup의 자식으로 생성
+        GameObject newCard = Instantiate(selectedCharacter.card, layoutGroup.transform);
+    }
+
+    public void OneDraw()
+    {
+        oneDrawScreen.SetActive(true);
+        RandomDraw(oneDrawLayout);  // oneDrawLayout에 카드 배치
     }
 
     public void TenDraw()
     {
         tenDrawScreen.SetActive(true);
+        for (int i = 0; i < 10; ++i)
+        {
+            RandomDraw(tenDrawLayout);  // tenDrawLayout에 카드 배치
+        }
+    }
+
+    private void DestroyAllChildren(Transform parent)
+    {
+        // 부모 객체의 모든 자식들을 파괴
+        foreach (Transform child in parent)
+        {
+            Destroy(child.gameObject);
+        }
     }
 }
+
