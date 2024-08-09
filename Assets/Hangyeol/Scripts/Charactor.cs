@@ -38,7 +38,7 @@ public abstract class Character : MonoBehaviour
     [Header("UI")]
     public TextMeshProUGUI level;
     public Slider hpSlider;
-
+    public GaugeManager gaugeManager;
     protected virtual void Start()
     {
         curHp = maxHp;

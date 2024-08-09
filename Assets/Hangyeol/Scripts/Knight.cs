@@ -39,6 +39,10 @@ public class Knight : Character
     public override void Attack()
     {
         StartCoroutine(PerformAttack());
+        if (gaugeManager != null)
+        {
+            gaugeManager.IncreaseGauge();
+        }
     }
 
     private IEnumerator PerformAttack()
