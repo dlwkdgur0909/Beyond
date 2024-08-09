@@ -8,7 +8,7 @@ public class TestEnemy : Character
     {
         if(curHp <= 0)
         {
-            Destroy(gameObject);
+            gameObject.SetActive(false);
         }
     }
 

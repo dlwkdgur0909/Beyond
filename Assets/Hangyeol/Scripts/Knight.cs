@@ -39,10 +39,7 @@ public class Knight : Character
     public override void Attack()
     {
         StartCoroutine(PerformAttack());
-        if (gaugeManager != null)
-        {
-            gaugeManager.IncreaseGauge();
-        }
+        IncreaseGauge();
     }
 
     private IEnumerator PerformAttack()
@@ -55,7 +52,7 @@ public class Knight : Character
 
             while (Vector3.Distance(transform.position, enemyPosition) > 0.1f)
             {
-                transform.position = Vector3.MoveTowards(transform.position, enemyPosition, Time.deltaTime * 5);
+                transform.position = Vector3.MoveTowards(transform.position, enemyPosition, Time.deltaTime * attackMove);
                 yield return null;
             }
 
@@ -67,7 +64,7 @@ public class Knight : Character
 
             while (Vector3.Distance(transform.position, originalPosition) > 0.1f)
             {
-                transform.position = Vector3.MoveTowards(transform.position, originalPosition, Time.deltaTime * 5);
+                transform.position = Vector3.MoveTowards(transform.position, originalPosition, Time.deltaTime * attackMove);
                 yield return null;
             }
         }

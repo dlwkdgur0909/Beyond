@@ -39,6 +39,13 @@ public abstract class Character : MonoBehaviour
     public TextMeshProUGUI level;
     public Slider hpSlider;
     public GaugeManager gaugeManager;
+
+    [Header("Gauge")]
+    public int gauge = 0; // 현재 게이지 값
+
+    [Header("AttackMove")]
+    public int attackMove;
+
     protected virtual void Start()
     {
         curHp = maxHp;
@@ -47,7 +54,7 @@ public abstract class Character : MonoBehaviour
 
     private void Update()
     {
-        // 예시로 HP 바를 실시간으로 업데이트
+        // HP 바를 실시간으로 업데이트
         UpdateHpUI();
     }
 
@@ -71,7 +78,10 @@ public abstract class Character : MonoBehaviour
     }
 
     public abstract void Attack();
+
+
     public abstract void SpecialMove();
+ 
 
     protected virtual void OnDeath()
     {
@@ -85,7 +95,13 @@ public abstract class Character : MonoBehaviour
         {
             hpSlider.value = curHp / maxHp;
         }
+    }
 
-  
+    public void IncreaseGauge()
+    {
+        if (gaugeManager != null)
+        {
+            gaugeManager.IncreaseGauge(transform);
+        }
     }
 }
