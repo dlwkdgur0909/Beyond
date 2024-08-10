@@ -256,7 +256,8 @@ MonoBehaviour:
   hpSlider: {fileID: 3900763338756929164, guid: aeb7b0978ede88c4aa488d4d0c544b70, type: 3}
   gaugeManager: {fileID: 1732436120}
   gauge: 0
-  attackMove: 10
+  specialMoveMultiplier: 2
+  attackMoveSpeed: 100
 --- !u!23 &739324125
 MeshRenderer:
   m_ObjectHideFlags: 0
@@ -544,7 +545,6 @@ MonoBehaviour:
   hpSlider: {fileID: 3900763338756929164, guid: aeb7b0978ede88c4aa488d4d0c544b70, type: 3}
   gaugeManager: {fileID: 1732436120}
   gauge: 0
-  attackMove: 0
 --- !u!1 &1732436114
 GameObject:
   m_ObjectHideFlags: 0

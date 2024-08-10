@@ -43,8 +43,7 @@ public abstract class Character : MonoBehaviour
     [Header("Gauge")]
     public int gauge = 0; // 현재 게이지 값
 
-    [Header("AttackMove")]
-    public int attackMove;
+  
 
     protected virtual void Start()
     {

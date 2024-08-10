@@ -126,4 +126,15 @@ public class GaugeManager : MonoBehaviour
             }
         }
     }
+    
+    // 게이지를 초기화시키는 메서드
+    public void ResetGauge(Transform characterTransform)
+    {
+        if (m_gaugeDict.ContainsKey(characterTransform))
+        {
+            Character character = characterTransform.GetComponent<Character>();
+            character.gauge = 0; // 캐릭터의 게이지 초기화
+            UpdateGaugeUI(character, m_gaugeDict[characterTransform]);
+        }
+    }
 }
