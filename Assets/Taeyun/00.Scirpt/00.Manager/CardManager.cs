@@ -7,20 +7,6 @@ public enum CardType
     Attack,
     Defense
 }
-[System.Serializable]
-public class CardInfo
-{
-    public GameObject cardObject;
-    public testCard cardScript;
-}
-
-[System.Serializable]
-public class CharCardData
-{
-    public CardInfo AttackCard;
-    public CardInfo DefenseCard;
-}
-
 public class CardManager : MonoBehaviour
 {
     public static CardManager Instance
@@ -39,14 +25,16 @@ public class CardManager : MonoBehaviour
     private static CardManager instance;
 
     [Header("캐릭터 카드 리스트")]
-    [SerializeField] private List<CharCardData> charCardData;
+    //[SerializeField] private List<testCard> charCardData;
+    [SerializeField] private List<testCard> attackCard;
+    [SerializeField] private List <testCard> defenseCard;
 
     [Header("선택한 카드")]
     [SerializeField] private List<testCard> selectCards = new List<testCard>();
 
     [Header("현재 가지고 있는 카드")]
-    [SerializeField] private List<CardInfo> currentCard = new List<CardInfo>();
-    public List<CardInfo> CurrentCard => currentCard;
+    [SerializeField] private List<testCard> currentCard = new List<testCard>();
+    public List<testCard> CurrentCard => currentCard;
 
     [Header("카드 포지션")]
     [SerializeField] private List<Transform> cardPos = new List<Transform>();
@@ -62,10 +50,10 @@ public class CardManager : MonoBehaviour
 
     private void CardInit()
     {
-        foreach(CharCardData card in charCardData)
-        {
-            //charCardDa
-        }
+        //foreach(CharCardData card in charCardData)
+        //{
+        //    //charCardDa
+        //}
     }
 
     #region GetCard
@@ -73,13 +61,13 @@ public class CardManager : MonoBehaviour
     {
         int ranCardType;
         int ranChar;
-        List<CardInfo> cardInfoList = new List<CardInfo>();
+        List<testCard> cardInfoList = new List<testCard>();
 
         // 현재 가지고 있는 카드 삭제
-        foreach (CardInfo spawnedCard in currentCard)
-        {
-            Destroy(spawnedCard.cardObject);
-        }
+        //foreach (CardInfo spawnedCard in currentCard)
+        //{
+        //    Destroy(spawnedCard.cardObject);
+        //}
         currentCard.Clear();
 
         // 랜덤한 캐릭터의 카드 생성
@@ -90,11 +78,11 @@ public class CardManager : MonoBehaviour
 
             if (ranCardType == (int)CardType.Attack)
             {
-                cardInfoList.Add(charCardData[ranChar].AttackCard);
+                cardInfoList.Add(attackCard[ranChar]);
             }
             else if (ranCardType == (int)CardType.Defense)
             {
-                cardInfoList.Add(charCardData[ranChar].DefenseCard);
+                cardInfoList.Add(defenseCard[ranChar]);
             }
         }
 
@@ -104,7 +92,7 @@ public class CardManager : MonoBehaviour
         // 카드 생성 및 위치 설정
         for (int i = 0; i < cardInfoList.Count; i++)
         {
-            GameObject cardObj = Instantiate(cardInfoList[i].cardObject, cardPos[i].position, Quaternion.identity);
+            GameObject cardObj = Instantiate(cardInfoList[i].gameObject, cardPos[i].position, Quaternion.identity);
             cardObj.transform.SetParent(canvas.transform);
             currentCard.Add(cardInfoList[i]);
         }
@@ -136,14 +124,14 @@ public class CardManager : MonoBehaviour
         selectCards.Add(null);
     }
 
-    public void RemoveCard(testCard card)
-    {
-        foreach(CardInfo curCard in currentCard)
-        {
-            if(card == curCard.cardScript)
-            {
-                currentCard.Remove(curCard);
-            }
-        }
-    }
+    //public void RemoveCard(testCard card)
+    //{
+    //    foreach(CardInfo curCard in currentCard)
+    //    {
+    //        if(card == curCard.cardScript)
+    //        {
+    //            currentCard.Remove(curCard);
+    //        }
+    //    }
+    //}
 }
