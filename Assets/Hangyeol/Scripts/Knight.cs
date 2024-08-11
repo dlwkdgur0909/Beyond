@@ -33,22 +33,23 @@ public class Knight : Character
         }
     }
 
-    private Transform FindClosestEnemy()
+    // HP가 가장 적은 적을 찾는 메서드로 수정
+    private Transform FindLowestHpEnemy()
     {
-        float minDistance = Mathf.Infinity;
-        Transform closestEnemy = null;
+        float minHp = Mathf.Infinity;
+        Transform lowestHpEnemy = null;
         GameObject[] enemies = GameObject.FindGameObjectsWithTag("Enemy");
 
         foreach (GameObject enemy in enemies)
         {
-            float distance = Vector3.Distance(transform.position, enemy.transform.position);
-            if (distance < minDistance)
+            TestEnemy enemyComponent = enemy.GetComponent<TestEnemy>();
+            if (enemyComponent != null && enemyComponent.curHp < minHp)
             {
-                minDistance = distance;
-                closestEnemy = enemy.transform;
+                minHp = enemyComponent.curHp;
+                lowestHpEnemy = enemy.transform;
             }
         }
-        return closestEnemy;
+        return lowestHpEnemy;
     }
 
     public override void Attack()
@@ -66,11 +67,11 @@ public class Knight : Character
 
     private IEnumerator PerformAttack()
     {
-        Transform closestEnemy = FindClosestEnemy();
-        if (closestEnemy != null)
+        Transform lowestHpEnemy = FindLowestHpEnemy();
+        if (lowestHpEnemy != null)
         {
             originalPosition = transform.position;
-            targetEnemy = closestEnemy;
+            targetEnemy = lowestHpEnemy;
             isAttacking = true;
 
             // 적에게 이동할 때까지 대기
