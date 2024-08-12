@@ -1,4 +1,3 @@
-
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -27,7 +26,7 @@ public class CardManager : MonoBehaviour
     [Header("캐릭터 카드 리스트")]
     //[SerializeField] private List<testCard> charCardData;
     [SerializeField] private List<testCard> attackCard;
-    [SerializeField] private List <testCard> defenseCard;
+    [SerializeField] private List<testCard> defenseCard;
 
     [Header("선택한 카드")]
     [SerializeField] private List<testCard> selectCards = new List<testCard>();
@@ -39,6 +38,12 @@ public class CardManager : MonoBehaviour
     [Header("카드 포지션")]
     [SerializeField] private List<Transform> cardPos = new List<Transform>();
     [SerializeField] private Transform canvas;
+
+    private void Awake()
+    {
+        instance = this;
+    }
+
 
     private void Update()
     {
@@ -63,26 +68,23 @@ public class CardManager : MonoBehaviour
         int ranChar;
         List<testCard> cardInfoList = new List<testCard>();
 
-        // 현재 가지고 있는 카드 삭제
-        //foreach (CardInfo spawnedCard in currentCard)
-        //{
-        //    Destroy(spawnedCard.cardObject);
-        //}
-        currentCard.Clear();
+        int cardIndex = 7 - currentCard.Count;
 
         // 랜덤한 캐릭터의 카드 생성
-        for (int i = 0; i < 7; i++) // 최대 7개의 카드를 생성
+        for (int i = 0; i < cardIndex; i++) // 최대 7개의 카드를 생성
         {
             ranChar = Random.Range(0, StageManager.Instance.Players.Count);
             ranCardType = Random.Range(0, 2);  // Attack 또는 Defense 카드 선택
 
             if (ranCardType == (int)CardType.Attack)
             {
-                cardInfoList.Add(attackCard[ranChar]);
+                GameObject card = Instantiate(attackCard[ranChar].gameObject, cardPos[i].position, Quaternion.identity);
+                cardInfoList.Add(card.GetComponent<testCard>());
             }
             else if (ranCardType == (int)CardType.Defense)
             {
-                cardInfoList.Add(defenseCard[ranChar]);
+                GameObject card = Instantiate(defenseCard[ranChar].gameObject, cardPos[i].position, Quaternion.identity);
+                cardInfoList.Add(card.GetComponent<testCard>());
             }
         }
 
@@ -92,8 +94,9 @@ public class CardManager : MonoBehaviour
         // 카드 생성 및 위치 설정
         for (int i = 0; i < cardInfoList.Count; i++)
         {
-            GameObject cardObj = Instantiate(cardInfoList[i].gameObject, cardPos[i].position, Quaternion.identity);
-            cardObj.transform.SetParent(canvas.transform);
+            //GameObject cardObj = Instantiate(cardInfoList[i].gameObject, cardPos[i].position, Quaternion.identity);
+            cardInfoList[i].transform.position = cardPos[i].position;
+            cardInfoList[i].gameObject.transform.SetParent(canvas.transform);
             currentCard.Add(cardInfoList[i]);
         }
     }
@@ -124,14 +127,18 @@ public class CardManager : MonoBehaviour
         selectCards.Add(null);
     }
 
-    //public void RemoveCard(testCard card)
-    //{
-    //    foreach(CardInfo curCard in currentCard)
-    //    {
-    //        if(card == curCard.cardScript)
-    //        {
-    //            currentCard.Remove(curCard);
-    //        }
-    //    }
-    //}
+    public void RemoveCard(testCard removeCard)
+    {
+        foreach (testCard card in currentCard)
+        {
+            if (card == removeCard)
+            {
+                Debug.Log("Card found, removing...");
+                currentCard.Remove(card);
+                Destroy(card.gameObject);  // Ensure you're destroying the GameObject
+                break;
+            }
+        }
+    }
+
 }
