@@ -173,7 +173,7 @@ MonoBehaviour:
   - {fileID: 9138289792215910325, guid: 5940b5cb4db338e42bf2e6f62c56bce2, type: 3}
   defenseCard:
   - {fileID: 8879718764594176473, guid: b31b90221bc592142affabac4e982514, type: 3}
-  - {fileID: 3818189550797433928, guid: 04dfea406468d914b907a1b9f83124a2, type: 3}
+  - {fileID: 3756722806637251352, guid: f0985131130c0cf459f4535359bc2cff, type: 3}
   - {fileID: 2721720984056554242, guid: 7896420bd0c70f04f9b81134844a84ab, type: 3}
   selectCards: []
   currentCard: []

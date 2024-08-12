@@ -1,3 +1,4 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -127,11 +128,11 @@ public class CardManager : MonoBehaviour
         selectCards.Add(null);
     }
 
-    public void RemoveCard(testCard removeCard)
+    public void RemoveCard(GameObject removeCard)
     {
         foreach (testCard card in currentCard)
         {
-            if (card == removeCard)
+            if (card.gameObject == removeCard)
             {
                 Debug.Log("Card found, removing...");
                 currentCard.Remove(card);
@@ -139,6 +140,6 @@ public class CardManager : MonoBehaviour
                 break;
             }
         }
-    }
 
+    }
 }

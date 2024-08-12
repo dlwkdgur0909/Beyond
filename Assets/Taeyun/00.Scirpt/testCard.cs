@@ -11,6 +11,6 @@ public class testCard : MonoBehaviour
 
     public void DeleteCard()
     {
-        CardManager.Instance.RemoveCard(this);
+        CardManager.Instance.RemoveCard(gameObject);
     }
 }
