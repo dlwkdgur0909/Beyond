@@ -122,7 +122,7 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 3756722806637251352, guid: e931bd0fd470bd2449077dbb044af807, type: 3}
+      - m_Target: {fileID: 6411761583763044731}
         m_TargetAssemblyTypeName: testCard, Assembly-CSharp
         m_MethodName: DeleteCard
         m_Mode: 1

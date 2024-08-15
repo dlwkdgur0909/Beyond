@@ -167,25 +167,14 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 80fb62c2fffd32b409e515e125642126, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  charCardData:
-  - AttackCard:
-      cardObject: {fileID: 3111204853915203704, guid: e0a81f9b3759370428387084c6c13c1c, type: 3}
-      cardScript: {fileID: 0}
-    DefenseCard:
-      cardObject: {fileID: 4315025748417580972, guid: b31b90221bc592142affabac4e982514, type: 3}
-      cardScript: {fileID: 0}
-  - AttackCard:
-      cardObject: {fileID: 579386346883933232, guid: e931bd0fd470bd2449077dbb044af807, type: 3}
-      cardScript: {fileID: 0}
-    DefenseCard:
-      cardObject: {fileID: 9119684859903813533, guid: 04dfea406468d914b907a1b9f83124a2, type: 3}
-      cardScript: {fileID: 0}
-  - AttackCard:
-      cardObject: {fileID: 0}
-      cardScript: {fileID: 0}
-    DefenseCard:
-      cardObject: {fileID: 0}
-      cardScript: {fileID: 0}
+  attackCard:
+  - {fileID: 6983811478230712292, guid: e0a81f9b3759370428387084c6c13c1c, type: 3}
+  - {fileID: 3756722806637251352, guid: e931bd0fd470bd2449077dbb044af807, type: 3}
+  - {fileID: 9138289792215910325, guid: 5940b5cb4db338e42bf2e6f62c56bce2, type: 3}
+  defenseCard:
+  - {fileID: 8879718764594176473, guid: b31b90221bc592142affabac4e982514, type: 3}
+  - {fileID: 3756722806637251352, guid: f0985131130c0cf459f4535359bc2cff, type: 3}
+  - {fileID: 2721720984056554242, guid: 7896420bd0c70f04f9b81134844a84ab, type: 3}
   selectCards: []
   currentCard: []
   cardPos:

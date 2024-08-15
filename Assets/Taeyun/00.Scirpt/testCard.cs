@@ -1,6 +1,5 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class testCard : MonoBehaviour
@@ -11,12 +10,12 @@ public class testCard : MonoBehaviour
     [SerializeField] private CardType cardType;
     public CardType CardType => cardType;
 
-    [SerializeField] private Action cardAbility;
-    public Action CardAbility => cardAbility;
+    [SerializeField] private int characterIndex;
+    [SerializeField] private TextMeshProUGUI skillText;
+    [SerializeField] private int skillLevel;
 
     public void DeleteCard()
     {
-        CardManager.Instance.RemoveCard(this);
-        Destroy(gameObject);
+        CardManager.Instance.RemoveCard(gameObject);
     }
 }
