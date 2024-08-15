@@ -13,7 +13,7 @@ public class Knight : Character
 
     void Update()
     {
-        if (Input.GetKeyDown(KeyCode.Space))
+        if (Input.GetKeyDown(KeyCode.Space) && !isAttacking && !returningToOriginalPosition)
         {
             Attack();
         }
@@ -33,7 +33,6 @@ public class Knight : Character
         }
     }
 
-    // HP가 가장 적은 적을 찾는 메서드로 수정
     private Transform FindLowestHpEnemy()
     {
         float minHp = Mathf.Infinity;
@@ -67,43 +66,36 @@ public class Knight : Character
 
     private IEnumerator PerformAttack()
     {
-        Transform lowestHpEnemy = FindLowestHpEnemy();
-        if (lowestHpEnemy != null)
+        isAttacking = true;
+        Transform closestEnemy = FindLowestHpEnemy();
+        if (closestEnemy != null)
         {
             originalPosition = transform.position;
-            targetEnemy = lowestHpEnemy;
-            isAttacking = true;
+            targetEnemy = closestEnemy;
 
-            // 적에게 이동할 때까지 대기
-            yield return new WaitUntil(() => !isAttacking && !returningToOriginalPosition);
+            // 적에게 이동
+            while (Vector3.Distance(transform.position, targetEnemy.position) > 0.1f)
+            {
+                transform.position = Vector3.MoveTowards(transform.position, targetEnemy.position, Time.deltaTime * attackMoveSpeed);
+                yield return null;
+            }
+
+            // 적에게 도착 시 데미지 입히기
+            TestEnemy enemy = targetEnemy.GetComponent<TestEnemy>();
+            if (enemy != null)
+            {
+                DealDamage(enemy);
+            }
+
+            // 공격 완료 후 원래 자리로 돌아가기
+            returningToOriginalPosition = true;
+            isAttacking = false;
         }
     }
 
     private void MoveTowardsEnemy()
     {
-        if (targetEnemy != null)
-        {
-            Vector3 enemyPosition = targetEnemy.position;
-
-            // 적에게 이동
-            if (Vector3.Distance(transform.position, enemyPosition) > 0.1f)
-            {
-                transform.position = Vector3.MoveTowards(transform.position, enemyPosition, Time.deltaTime * attackMoveSpeed);
-            }
-            else
-            {
-                // 적에게 도착 시 데미지 입히기
-                TestEnemy enemy = targetEnemy.GetComponent<TestEnemy>();
-                if (enemy != null)
-                {
-                    DealDamage(enemy);
-                }
-
-                // 공격 완료 후 원래 자리로 돌아가기
-                isAttacking = false;
-                returningToOriginalPosition = true;
-            }
-        }
+        // 이 부분은 PerformAttack에서 처리됨
     }
 
     private void ReturnToOriginalPosition()
@@ -117,12 +109,12 @@ public class Knight : Character
             returningToOriginalPosition = false;
         }
     }
-
-    public override void SpecialMove()
-    {
-        StartCoroutine(SpecialMoveCoroutine()); // 필살기를 코루틴으로 실행
-    }
-
+		
+public override void SpecialMove()
+{
+	StartCoroutine(SpecialMoveCoroutine());
+}
+ 
     private IEnumerator SpecialMoveCoroutine()
     {
         float originalDmg = dmg; // 원래 공격력을 저장
