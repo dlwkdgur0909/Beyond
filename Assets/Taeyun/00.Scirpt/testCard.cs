@@ -38,6 +38,11 @@ public class testCard : MonoBehaviour
         return (skillLevel != 3,characterIndex, skillLevel);
     }
 
+    public void UseSkill()
+    {
+        //CardManager.Instance.
+    }
+
     public void SkillCardLevelUp()
     {
         if(skillLevel != 3)
