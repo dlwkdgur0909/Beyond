@@ -805,9 +805,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   curStage: 0
   players:
-  - {fileID: 0}
-  - {fileID: 0}
-  - {fileID: 0}
+  - {fileID: 1471040271}
   testMonster: []
 --- !u!4 &777443020
 Transform:
@@ -1566,5 +1564,5 @@ SceneRoots:
   - {fileID: 1397603725}
   - {fileID: 92141522}
   - {fileID: 145693107}
-  - {fileID: 1471040274}
   - {fileID: 979998456}
+  - {fileID: 1471040274}

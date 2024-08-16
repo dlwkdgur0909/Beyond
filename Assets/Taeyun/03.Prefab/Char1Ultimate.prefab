@@ -34,7 +34,7 @@ RectTransform:
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
-  m_AnchoredPosition: {x: 0, y: 80.2}
+  m_AnchoredPosition: {x: 0, y: 53.199997}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!222 &6507351864228474233
@@ -419,5 +419,6 @@ MonoBehaviour:
   cardType: 0
   cardNameText: {fileID: 79661352409375616}
   cardLevelText: {fileID: 8605381277574862307}
+  fontSize: 19
   characterIndex: 1
   skillLevel: 3

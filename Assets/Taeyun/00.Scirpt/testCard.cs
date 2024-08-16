@@ -12,8 +12,11 @@ public class testCard : MonoBehaviour
     [SerializeField] private CardType cardType;
     public CardType CardType => cardType;
 
+
+    [Header("CardUI")]
     [SerializeField] private TextMeshProUGUI cardNameText;
     [SerializeField] private TextMeshProUGUI cardLevelText;
+    [SerializeField] private float fontSize;
 
     [Header("CardInfo")]
     [SerializeField] private int characterIndex;
@@ -24,8 +27,10 @@ public class testCard : MonoBehaviour
 
     private void OnEnable()
     {
+        cardLevelText.fontSize = fontSize;    
+
         cardNameText.text = "카드 번호 : " + characterIndex.ToString();
-        cardLevelText.text = "카드 레벨 : " + skillLevel.ToString();
+        cardLevelText.text = "카드 레벨 : " + skillLevel.ToString() + "카드 타입 : " + cardType;
     }
 
     public void DeleteCard()
@@ -33,14 +38,14 @@ public class testCard : MonoBehaviour
         CardManager.Instance.RemoveCard(gameObject);
     }
 
-    public (bool, int, int) ReturnCardInfo()
+    public (bool, int, int, CardType) ReturnCardInfo()
     {
-        return (skillLevel != 3,characterIndex, skillLevel);
+        return (skillLevel != 3,characterIndex, skillLevel, cardType);
     }
 
     public void UseSkill()
     {
-        //CardManager.Instance.
+        StageManager.Instance.Players[0].Attack();
     }
 
     public void SkillCardLevelUp()
@@ -48,7 +53,7 @@ public class testCard : MonoBehaviour
         if(skillLevel != 3)
         {
             skillLevel++;
-            cardLevelText.text = "카드 레벨 : " + skillLevel.ToString();
+            cardLevelText.text = "카드 레벨 : " + skillLevel.ToString() + "카드 타입 : " + cardType;
         }
     }
 }
