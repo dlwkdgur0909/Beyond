@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using System.Net.NetworkInformation;
 using UnityEngine;
 
 public enum CardType
@@ -52,6 +53,10 @@ public class CardManager : MonoBehaviour
         {
             GetCard();
         }
+        if(Input.GetKeyDown(KeyCode.S))
+        {
+            CardLevelUp();
+        }
     }
 
     private void CardInit()
@@ -91,15 +96,21 @@ public class CardManager : MonoBehaviour
 
         // 카드 리스트 셔플
         Shuffle(cardInfoList);
+        Debug.Log(cardInfoList.Count);
+
 
         // 카드 생성 및 위치 설정
-        for (int i = 0; i < cardInfoList.Count; i++)
+        for (int i = 0; i < 7; i++)
         {
             //GameObject cardObj = Instantiate(cardInfoList[i].gameObject, cardPos[i].position, Quaternion.identity);
-            cardInfoList[i].transform.position = cardPos[i].position;
-            cardInfoList[i].gameObject.transform.SetParent(canvas.transform);
-            currentCard.Add(cardInfoList[i]);
+            if (cardInfoList.Count > i)
+            {
+                currentCard.Add(cardInfoList[i]);
+                cardInfoList[i].gameObject.transform.SetParent(canvas.transform);
+            }
+            currentCard[i].transform.position = cardPos[i].position;
         }
+
     }
 
     private void Shuffle<T>(List<T> list)
@@ -112,8 +123,35 @@ public class CardManager : MonoBehaviour
             list[randIndex] = temp;
         }
     }
-
     #endregion
+
+    /// <summary>
+    /// 카드의 레벨을 올리는 함수
+    /// </summary>
+    private void CardLevelUp()
+    {
+        for (int i = 0; i < currentCard.Count - 1; i++)
+        {
+            // 현재 카드와 다음 카드의 정보가 동일한지 확인
+            if (currentCard[i].ReturnCardInfo() == currentCard[i + 1].ReturnCardInfo())
+            {
+                // 카드의 최대 레벨이 아닐 때 레벨업
+                if (currentCard[i].ReturnCardInfo().Item1 == true)
+                {
+                    currentCard[i].SkillCardLevelUp(); // 첫 번째 카드 레벨업
+                    Destroy(currentCard[i + 1].gameObject); // 두 번째 카드 삭제
+                    currentCard.RemoveAt(i + 1); // 리스트에서 제거
+                    i = -1; // 루프를 처음부터 다시 시작
+                }
+            }
+        }
+
+        // 카드 위치 재정렬
+        for (int i = 0; i < currentCard.Count; i++)
+        {
+            currentCard[i].transform.position = cardPos[i].position;
+        }
+    }
 
 
     #region SelectCard
@@ -140,6 +178,5 @@ public class CardManager : MonoBehaviour
                 break;
             }
         }
-
     }
 }
