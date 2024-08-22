@@ -24,8 +24,8 @@ public class StageManager : MonoBehaviour
     public int CurStage => curStage;
 
     [Header("현재 엔티티")]
-    [SerializeField] private List<testPlayer> players = new List<testPlayer>();
-    public List<testPlayer> Players => players;
+    [SerializeField] private List<Knight> players = new List<Knight>();
+    public List<Knight> Players => players;
     [SerializeField] private List<testMonster> testMonster = new List<testMonster>();
 
     private void Awake()
