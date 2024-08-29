@@ -46,6 +46,11 @@ public class CardManager : MonoBehaviour
         instance = this;
     }
 
+    private void OnDisable()
+    {
+        selectCards.Clear();
+        currentCard.Clear();
+    }
 
     private void Update()
     {
@@ -111,6 +116,8 @@ public class CardManager : MonoBehaviour
             currentCard[i].transform.position = cardPos[i].position;
         }
 
+
+        CardLevelUp();
     }
 
     private void Shuffle<T>(List<T> list)

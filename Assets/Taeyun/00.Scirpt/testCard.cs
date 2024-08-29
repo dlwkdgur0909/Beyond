@@ -45,7 +45,7 @@ public class testCard : MonoBehaviour
 
     public void UseSkill()
     {
-        StageManager.Instance.Players[0].Attack();
+        StageManager.Instance.Players[characterIndex - 1].Attack();
     }
 
     public void SkillCardLevelUp()
