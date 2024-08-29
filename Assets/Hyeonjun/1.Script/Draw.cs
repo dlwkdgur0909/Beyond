@@ -12,7 +12,7 @@ public class CharacterData
     public GameObject card; //카드
     // 추가적인 필드들을 여기에 정의할 수 있습니다.
 
-    public CharacterData(string name,float weight, GameObject card)
+    public CharacterData(string name, float weight, GameObject card)
     {
         this.name = name;
         this.weight = weight;
