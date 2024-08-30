@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public class GaugeManager : MonoBehaviour
 {
+
     [SerializeField]
     private Image gaugeItemPrefab; // 게이지 아이템 프리팹
 

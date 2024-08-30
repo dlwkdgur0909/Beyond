@@ -13,8 +13,9 @@ public class Knight : Character
     [SerializeField] private Animator animator;
     private readonly int hashAttack = Animator.StringToHash("Attack");
 
-    private void OnEnable()
+    protected override void OnEnable()
     {
+        base.OnEnable();
         animator = GetComponent<Animator>();
     }
 
@@ -38,7 +39,6 @@ public class Knight : Character
 
     public override void Attack()
     {
-        animator.SetTrigger(hashAttack);
         if (gauge >= 5)
         {
             SpecialMove(); // 게이지가 5일 때 필살기 사용
@@ -48,6 +48,7 @@ public class Knight : Character
             StartCoroutine(PerformAttack()); // 일반 공격
             IncreaseGauge(); // 게이지 증가
         }
+        animator.SetTrigger(hashAttack);
     }
 
     private IEnumerator PerformAttack()
@@ -69,7 +70,7 @@ public class Knight : Character
             TestEnemy enemy = targetEnemy.GetComponent<TestEnemy>();
             if (enemy != null)
             {
-                DealDamage(enemy);
+                DealDamage(enemy, false);
             }
 
             yield return null;

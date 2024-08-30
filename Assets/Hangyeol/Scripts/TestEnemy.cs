@@ -29,7 +29,7 @@ public class TestEnemy : Character
             Knight player = other.GetComponent<Knight>();
             if (player != null)
             {
-                DealDamage(player);
+                DealDamage(player, true);
             }
         }
     }

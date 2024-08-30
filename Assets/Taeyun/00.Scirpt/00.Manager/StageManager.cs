@@ -26,7 +26,9 @@ public class StageManager : MonoBehaviour
     [Header("현재 엔티티")]
     [SerializeField] private List<Knight> players = new List<Knight>();
     public List<Knight> Players => players;
-    [SerializeField] private List<testMonster> testMonster = new List<testMonster>();
+    [SerializeField] private List<TestEnemy> testMonster = new List<TestEnemy>();
+    [SerializeField] private List<GameObject> testMonsterPrefabs = new List<GameObject>();
+    [SerializeField] private List<Transform> testMonsterSpawnTransforms = new List<Transform>();
 
     private void Awake()
     {
@@ -48,6 +50,12 @@ public class StageManager : MonoBehaviour
     {
         // 플레이어 캐릭터 설정
     }
+
+    public void EnemyDie(TestEnemy enemyObj)
+    {
+        Destroy(enemyObj.gameObject);
+        testMonster.Remove(enemyObj);
+    }
     #endregion
 
     #region Spawn
@@ -58,7 +66,12 @@ public class StageManager : MonoBehaviour
 
     private void SpawnEnemy()
     {
-        // 적을 생성하는 함수
+        int ranEnemy = Random.Range(0, testMonsterPrefabs.Count);
+        for (int i = 0; i < 3; i++)
+        {
+            GameObject enemy = Instantiate(testMonsterPrefabs[ranEnemy], testMonsterSpawnTransforms[i].position, Quaternion.identity);
+            testMonster.Add(enemy.GetComponent<TestEnemy>());
+        }
     }
     
     private void SpawnBoss()

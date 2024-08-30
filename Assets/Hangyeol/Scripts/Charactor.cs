@@ -43,9 +43,9 @@ public abstract class Character : MonoBehaviour
     [Header("Gauge")]
     public int gauge = 0; // 현재 게이지 값
 
-  
 
-    protected virtual void Start()
+
+    protected virtual void OnEnable()
     {
         curHp = maxHp;
         UpdateHpUI();
@@ -57,7 +57,7 @@ public abstract class Character : MonoBehaviour
         UpdateHpUI();
     }
 
-    public void TakeDamage(float amount)
+    public void TakeDamage(float amount, bool isEnemy)
     {
         curHp -= amount;
         curHp = Mathf.Clamp(curHp, 0, maxHp); // HP가 0 이하로 떨어지지 않도록 제한
@@ -65,22 +65,29 @@ public abstract class Character : MonoBehaviour
 
         if (curHp <= 0)
         {
-            OnDeath();
+            if (!isEnemy)
+            {
+                OnDeath();
+            }
+            else if(isEnemy)
+            {
+                StageManager.Instance.EnemyDie(gameObject.GetComponent<TestEnemy>());
+            }
         }
     }
 
-    public void DealDamage(Character target)
+    public void DealDamage(Character target, bool isEnemy)
     {
         float effectiveness = TypeEffectiveness.GetEffectiveness(this.attribute, target.attribute);
         float damage = dmg * effectiveness;
-        target.TakeDamage(damage);
+        target.TakeDamage(damage, isEnemy);
     }
 
     public abstract void Attack();
 
 
     public abstract void SpecialMove();
- 
+
 
     protected virtual void OnDeath()
     {
