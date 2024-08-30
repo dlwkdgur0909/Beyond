@@ -8,29 +8,14 @@ public class Knight : Character
 
     private Vector3 originalPosition;
     private Transform targetEnemy;
-    private bool isAttacking = false;
-    private bool returningToOriginalPosition = false;
 
-    void Update()
+    [Header("Animation")]
+    [SerializeField] private Animator animator;
+    private readonly int hashAttack = Animator.StringToHash("Attack");
+
+    private void OnEnable()
     {
-        if (Input.GetKeyDown(KeyCode.Space) && !isAttacking && !returningToOriginalPosition)
-        {
-            Attack();
-        }
-
-        if (curHp <= 0)
-        {
-            Destroy(gameObject);
-        }
-
-        if (isAttacking)
-        {
-            MoveTowardsEnemy();
-        }
-        else if (returningToOriginalPosition)
-        {
-            ReturnToOriginalPosition();
-        }
+        animator = GetComponent<Animator>();
     }
 
     private Transform FindLowestHpEnemy()
@@ -53,6 +38,7 @@ public class Knight : Character
 
     public override void Attack()
     {
+        animator.SetTrigger(hashAttack);
         if (gauge >= 5)
         {
             SpecialMove(); // 게이지가 5일 때 필살기 사용
@@ -66,7 +52,6 @@ public class Knight : Character
 
     private IEnumerator PerformAttack()
     {
-        isAttacking = true;
         Transform closestEnemy = FindLowestHpEnemy();
         if (closestEnemy != null)
         {
@@ -87,34 +72,22 @@ public class Knight : Character
                 DealDamage(enemy);
             }
 
-            // 공격 완료 후 원래 자리로 돌아가기
-            returningToOriginalPosition = true;
-            isAttacking = false;
+            yield return null;
+            yield return new WaitForSeconds(animator.GetCurrentAnimatorClipInfo(0).Length);
+
+            while (Vector3.Distance(transform.position, originalPosition) > 0.1f)
+            {
+                transform.position = Vector3.MoveTowards(transform.position, originalPosition, Time.deltaTime * attackMoveSpeed);
+                yield return null;
+            }
         }
     }
 
-    private void MoveTowardsEnemy()
+    public override void SpecialMove()
     {
-        // 이 부분은 PerformAttack에서 처리됨
+        StartCoroutine(SpecialMoveCoroutine());
     }
 
-    private void ReturnToOriginalPosition()
-    {
-        if (Vector3.Distance(transform.position, originalPosition) > 0.1f)
-        {
-            transform.position = Vector3.MoveTowards(transform.position, originalPosition, Time.deltaTime * attackMoveSpeed);
-        }
-        else
-        {
-            returningToOriginalPosition = false;
-        }
-    }
-		
-public override void SpecialMove()
-{
-	StartCoroutine(SpecialMoveCoroutine());
-}
- 
     private IEnumerator SpecialMoveCoroutine()
     {
         float originalDmg = dmg; // 원래 공격력을 저장
