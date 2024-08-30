@@ -102,9 +102,9 @@ public class Knight : Character
         gauge = 0; // 게이지 초기화
 
         // 게이지 UI를 업데이트 (GaugeManager에 ResetGauge 메서드를 호출)
-        if (gaugeManager != null)
-        {
-            gaugeManager.ResetGauge(this.transform);
-        }
+        //if (gaugeManager != null)
+        //{
+            GaugeManager.Instance.ResetGauge(this.transform);
+        //}
     }
 }

@@ -38,6 +38,7 @@ public class StageManager : MonoBehaviour
     private void Start()
     {
         NextStage();
+        SpawnEnemy();
     }
 
     private void NextStage()
@@ -51,11 +52,13 @@ public class StageManager : MonoBehaviour
         // 플레이어 캐릭터 설정
     }
 
-    public void EnemyDie(TestEnemy enemyObj)
+    public void EnemyDie(GameObject enemyObj)
     {
-        Destroy(enemyObj.gameObject);
-        testMonster.Remove(enemyObj);
+        Debug.Log("몬스터 사망");
+        Destroy(enemyObj);  // 전달된 enemyObj를 파괴
+        testMonster.Remove(enemyObj.GetComponent<TestEnemy>());
     }
+
     #endregion
 
     #region Spawn

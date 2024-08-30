@@ -4,13 +4,13 @@ public class TestEnemy : Character
 {
 
 
-    void Update()
-    {
-        if(curHp <= 0)
-        {
-            gameObject.SetActive(false);
-        }
-    }
+    //void Update()
+    //{
+    //    if(curHp <= 0)
+    //    {
+    //        gameObject.SetActive(false);
+    //    }
+    //}
 
     public override void Attack()
     {
@@ -29,7 +29,7 @@ public class TestEnemy : Character
             Knight player = other.GetComponent<Knight>();
             if (player != null)
             {
-                DealDamage(player, true);
+                DealDamage(player, false);
             }
         }
     }

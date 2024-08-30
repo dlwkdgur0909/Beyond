@@ -4,6 +4,7 @@ using System.Collections.Generic;
 
 public class GaugeManager : MonoBehaviour
 {
+    public static GaugeManager Instance;
 
     [SerializeField]
     private Image gaugeItemPrefab; // 게이지 아이템 프리팹
@@ -17,6 +18,11 @@ public class GaugeManager : MonoBehaviour
     public int maxGauge = 5; // 최대 게이지 수
     public Color defaultColor = Color.white;
     public Color filledColor = Color.red;
+
+    private void Awake()
+    {
+        Instance = this;
+    }
 
     private void Start()
     {

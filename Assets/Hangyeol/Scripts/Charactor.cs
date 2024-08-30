@@ -38,7 +38,7 @@ public abstract class Character : MonoBehaviour
     [Header("UI")]
     public TextMeshProUGUI level;
     public Slider hpSlider;
-    public GaugeManager gaugeManager;
+    //public GaugeManager gaugeManager;
 
     [Header("Gauge")]
     public int gauge = 0; // 현재 게이지 값
@@ -64,15 +64,8 @@ public abstract class Character : MonoBehaviour
         UpdateHpUI();
 
         if (curHp <= 0)
-        {
-            if (!isEnemy)
-            {
-                OnDeath();
-            }
-            else if(isEnemy)
-            {
-                StageManager.Instance.EnemyDie(gameObject.GetComponent<TestEnemy>());
-            }
+        { 
+            OnDeath(isEnemy);
         }
     }
 
@@ -89,8 +82,13 @@ public abstract class Character : MonoBehaviour
     public abstract void SpecialMove();
 
 
-    protected virtual void OnDeath()
+    protected virtual void OnDeath(bool isEnemy)
     {
+        if (isEnemy)
+        {
+            Debug.Log("몬스터 파괴");
+            StageManager.Instance.EnemyDie(gameObject);
+        }
         // 사망 시 처리 로직 (예: 캐릭터 비활성화, 사망 애니메이션 실행 등)
         Debug.Log($"{gameObject.name} has died.");
     }
@@ -105,9 +103,9 @@ public abstract class Character : MonoBehaviour
 
     public void IncreaseGauge()
     {
-        if (gaugeManager != null)
-        {
-            gaugeManager.IncreaseGauge(transform);
-        }
+        //if (gaugeManager != null)
+        //{
+        GaugeManager.Instance.IncreaseGauge(transform);
+        //}
     }
 }
