@@ -23,7 +23,7 @@ public class UIManager : MonoBehaviour
 
     public void OnClickInGameStart()
     {
-        SceneManager.LoadScene("HangyeolTest");
+        SceneManager.LoadScene("InGame");
     }
 
     public void OnClickSetting() 
