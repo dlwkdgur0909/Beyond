@@ -54,6 +54,9 @@ public class Knight : Character
     private IEnumerator PerformAttack()
     {
         Transform closestEnemy = FindLowestHpEnemy();
+
+        yield return new WaitForSeconds(0.1f);
+
         if (closestEnemy != null)
         {
             originalPosition = transform.position;
