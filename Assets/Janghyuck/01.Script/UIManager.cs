@@ -9,6 +9,13 @@ public class UIManager : MonoBehaviour
     [SerializeField] private GameObject creditPanel;
     [SerializeField] private GameObject exitPanel;
 
+    [SerializeField] private Light DefaultLight;
+
+    void Awake()
+    {
+        DontDestroyOnLoad(DefaultLight);
+    }
+
     public void OnClickStart()
     {
         SceneManager.LoadScene("Loby");        

@@ -2,8 +2,6 @@ using UnityEngine;
 
 public class TestEnemy : Character
 {
-
-
     void Update()
     {
         if (curHp <= 0)

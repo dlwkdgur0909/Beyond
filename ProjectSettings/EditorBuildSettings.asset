@@ -6,15 +6,15 @@ EditorBuildSettings:
   serializedVersion: 2
   m_Scenes:
   - enabled: 1
-    path: Assets/Janghyuck/00.Scene/Title.unity
+    path: Assets/00.Scene/Title.unity
     guid: 42e6aebd6f43820409da7cc12946bf1d
   - enabled: 1
-    path: Assets/Hyeonjun/0.Scence/Loby.unity
+    path: Assets/00.Scene/Loby.unity
     guid: 76418b3a0d7483c41b604317b9d1589c
   - enabled: 1
-    path: Assets/Hyeonjun/0.Scence/Draw.unity
+    path: Assets/00.Scene/Draw.unity
     guid: 02631c17b37c3894186c0b9b3a9baa46
   - enabled: 1
-    path: Assets/Taeyun/HangyeolTest.unity
-    guid: b8e81735ab473ca43a769897c28c9f7f
+    path: Assets/00.Scene/HangyeolTest.unity
+    guid: 2cfdf87204d6ba1448c512cf4a6242d8
   m_configObjects: {}
