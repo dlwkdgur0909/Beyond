@@ -11,7 +11,12 @@ public class UIManager : MonoBehaviour
 
     public void OnClickStart()
     {
-        SceneManager.LoadScene("Tutorial");        
+        SceneManager.LoadScene("Loby");        
+    }
+
+    public void OnClickInGameStart()
+    {
+        SceneManager.LoadScene("HangyeolTest");
     }
 
     public void OnClickSetting() 
