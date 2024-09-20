@@ -15,6 +15,6 @@ EditorBuildSettings:
     path: Assets/00.Scene/Draw.unity
     guid: 02631c17b37c3894186c0b9b3a9baa46
   - enabled: 1
-    path: Assets/00.Scene/HangyeolTest.unity
+    path: Assets/00.Scene/InGame.unity
     guid: 2cfdf87204d6ba1448c512cf4a6242d8
   m_configObjects: {}
