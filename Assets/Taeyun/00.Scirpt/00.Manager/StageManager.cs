@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class StageManager : MonoBehaviour
@@ -22,6 +23,7 @@ public class StageManager : MonoBehaviour
     [Header("스테이지")]
     [SerializeField] private int curStage = 0;
     public int CurStage => curStage;
+    [SerializeField] private TextMeshProUGUI stageText;
 
     [Header("현재 엔티티")]
     [SerializeField] private List<Knight> players = new List<Knight>();
@@ -39,6 +41,15 @@ public class StageManager : MonoBehaviour
     {
         NextStage();
         SpawnEnemy();
+    }
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.D))
+        {
+            curStage++;
+            stageText.text = "현재 스테이지 : " + curStage.ToString();
+        }
     }
 
     private void NextStage()

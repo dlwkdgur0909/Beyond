@@ -10,32 +10,17 @@ public enum CardType
 }
 public class CardManager : MonoBehaviour
 {
-    public static CardManager Instance
-    {
-        get => instance;
-        set
-        {
-            if (value == null)
-                instance = null;
-            else if (instance == null)
-                instance = value;
-            else if (instance != value)
-                Destroy(value);
-        }
-    }
-    private static CardManager instance;
+    public static CardManager Instance { get; set; }
 
     [Header("캐릭터 카드 리스트")]
-    //[SerializeField] private List<testCard> charCardData;
     [SerializeField] private List<testCard> attackCard;
     [SerializeField] private List<testCard> defenseCard;
 
     [Header("선택한 카드")]
-    [SerializeField] private List<testCard> selectCards = new List<testCard>();
+    [SerializeField] private List<testCard> selectCards = new List<testCard>();  // 선택한 카드 리스트
 
     [Header("현재 가지고 있는 카드")]
     [SerializeField] private List<testCard> currentCard = new List<testCard>();
-    public List<testCard> CurrentCard => currentCard;
 
     [Header("카드 포지션")]
     [SerializeField] private List<Transform> cardPos = new List<Transform>();
@@ -43,7 +28,8 @@ public class CardManager : MonoBehaviour
 
     private void Awake()
     {
-        instance = this;
+        
+        Instance = this;
     }
 
     private void OnDisable()
@@ -54,22 +40,20 @@ public class CardManager : MonoBehaviour
 
     private void Update()
     {
+        // 'D' 키를 눌렀을 때 카드 생성
         if (Input.GetKeyDown(KeyCode.D))
         {
-            GetCard();
+            GetCard();  // 카드 스폰 로직
         }
-        if(Input.GetKeyDown(KeyCode.S))
-        {
-            CardLevelUp();
-        }
-    }
 
-    private void CardInit()
-    {
-        //foreach(CharCardData card in charCardData)
-        //{
-        //    //charCardDa
-        //}
+        // 'S' 키를 눌렀을 때 선택된 카드들의 행동 실행
+        if (Input.GetKeyDown(KeyCode.S))
+        {
+            if (selectCards.Count == 3)  // 선택된 카드가 3장일 때만 실행
+            {
+                StartCoroutine(ExecuteCardActions());
+            }
+        }
     }
 
     #region GetCard
@@ -81,7 +65,6 @@ public class CardManager : MonoBehaviour
 
         int cardIndex = 7 - currentCard.Count;
 
-        // 랜덤한 캐릭터의 카드 생성
         for (int i = 0; i < cardIndex; i++) // 최대 7개의 카드를 생성
         {
             ranChar = Random.Range(0, StageManager.Instance.Players.Count);
@@ -101,13 +84,10 @@ public class CardManager : MonoBehaviour
 
         // 카드 리스트 셔플
         Shuffle(cardInfoList);
-        Debug.Log(cardInfoList.Count);
-
 
         // 카드 생성 및 위치 설정
         for (int i = 0; i < 7; i++)
         {
-            //GameObject cardObj = Instantiate(cardInfoList[i].gameObject, cardPos[i].position, Quaternion.identity);
             if (cardInfoList.Count > i)
             {
                 currentCard.Add(cardInfoList[i]);
@@ -115,7 +95,6 @@ public class CardManager : MonoBehaviour
             }
             currentCard[i].transform.position = cardPos[i].position;
         }
-
 
         CardLevelUp();
     }
@@ -132,46 +111,50 @@ public class CardManager : MonoBehaviour
     }
     #endregion
 
-    /// <summary>
-    /// 카드의 레벨을 올리는 함수
-    /// </summary>
     private void CardLevelUp()
     {
         for (int i = 0; i < currentCard.Count - 1; i++)
         {
-            // 현재 카드와 다음 카드의 정보가 동일한지 확인
             if (currentCard[i].ReturnCardInfo() == currentCard[i + 1].ReturnCardInfo())
             {
-                // 카드의 최대 레벨이 아닐 때 레벨업
                 if (currentCard[i].ReturnCardInfo().Item1 == true)
                 {
-                    currentCard[i].SkillCardLevelUp(); // 첫 번째 카드 레벨업
-                    Destroy(currentCard[i + 1].gameObject); // 두 번째 카드 삭제
-                    currentCard.RemoveAt(i + 1); // 리스트에서 제거
-                    i = -1; // 루프를 처음부터 다시 시작
+                    currentCard[i].SkillCardLevelUp();
+                    Destroy(currentCard[i + 1].gameObject);
+                    currentCard.RemoveAt(i + 1);
+                    i = -1;
                 }
             }
         }
 
-        // 카드 위치 재정렬
         for (int i = 0; i < currentCard.Count; i++)
         {
             currentCard[i].transform.position = cardPos[i].position;
         }
     }
 
-
-    #region SelectCard
-    public void SelectCard(int index)
+    #region 카드 선택 및 행동 실행
+    public void SelectCard(testCard card)
     {
+        if (selectCards.Count < 3)  // 3개 카드만 선택 가능
+        {
+            selectCards.Add(card);
+            Debug.Log("Card selected: " + card.CardName);
+        }
+    }
 
+    // 선택한 카드들의 행동을 순차적으로 실행하는 코루틴
+    private IEnumerator ExecuteCardActions()
+    {
+        foreach (testCard card in selectCards)
+        {
+            card.UseSkill();  // 카드 행동 실행
+            yield return new WaitForSeconds(1f);  // 각 행동 사이에 딜레이 추가 (조정 가능)
+        }
+
+        selectCards.Clear();  // 행동이 끝나면 선택한 카드 초기화
     }
     #endregion
-
-    public void MoveCard()
-    {
-        selectCards.Add(null);
-    }
 
     public void RemoveCard(GameObject removeCard)
     {
@@ -181,9 +164,11 @@ public class CardManager : MonoBehaviour
             {
                 Debug.Log("Card found, removing...");
                 currentCard.Remove(card);
-                Destroy(card.gameObject);  // Ensure you're destroying the GameObject
+                Destroy(card.gameObject);
                 break;
             }
         }
     }
 }
+
+
