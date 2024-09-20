@@ -8,6 +8,8 @@ public class Knight : Character
 
     private Vector3 originalPosition;
     private Transform targetEnemy;
+    private bool isAttacking = false;
+    private bool returningToOriginalPosition = false;
 
     [Header("Animation")]
     [SerializeField] private Animator animator;
@@ -39,20 +41,25 @@ public class Knight : Character
 
     public override void Attack()
     {
-        if (gauge >= 5)
+        if (!isAttacking && !returningToOriginalPosition) // 공격 중이거나 돌아가는 중이 아니면
         {
-            SpecialMove(); // 게이지가 5일 때 필살기 사용
+            if (gauge >= 5)
+            {
+                SpecialMove(); // 필살기 사용
+            }
+            else
+            {
+                StartCoroutine(PerformAttack()); // 일반 공격
+                IncreaseGauge(); // 게이지 증가
+            }
+
+            animator.SetTrigger(hashAttack);
         }
-        else
-        {
-            StartCoroutine(PerformAttack()); // 일반 공격
-            IncreaseGauge(); // 게이지 증가
-        }
-        animator.SetTrigger(hashAttack);
     }
 
     private IEnumerator PerformAttack()
     {
+        isAttacking = true; // 공격 시작
         Transform closestEnemy = FindLowestHpEnemy();
 
         yield return new WaitForSeconds(0.1f);
@@ -76,15 +83,20 @@ public class Knight : Character
                 DealDamage(enemy, false);
             }
 
-            yield return null;
-            yield return new WaitForSeconds(animator.GetCurrentAnimatorClipInfo(0).Length);
+            // 애니메이션이 끝날 때까지 대기
+            yield return new WaitForSeconds(animator.GetCurrentAnimatorStateInfo(0).length);
 
+            // 원래 위치로 돌아가기
             while (Vector3.Distance(transform.position, originalPosition) > 0.1f)
             {
                 transform.position = Vector3.MoveTowards(transform.position, originalPosition, Time.deltaTime * attackMoveSpeed);
                 yield return null;
             }
+
+            returningToOriginalPosition = false; // 위치 복귀 완료
         }
+
+        isAttacking = false; // 공격 종료
     }
 
     public override void SpecialMove()
@@ -104,10 +116,7 @@ public class Knight : Character
         dmg = originalDmg;
         gauge = 0; // 게이지 초기화
 
-        // 게이지 UI를 업데이트 (GaugeManager에 ResetGauge 메서드를 호출)
-        //if (gaugeManager != null)
-        //{
-            GaugeManager.Instance.ResetGauge(this.transform);
-        //}
+        // 게이지 UI 업데이트
+        GaugeManager.Instance.ResetGauge(this.transform);
     }
 }
