@@ -35,7 +35,7 @@ public class testCard : MonoBehaviour
         cardLevelText.fontSize = fontSize;
 
         cardNameText.text = "카드 번호 : " + characterIndex.ToString();
-        cardLevelText.text = "카드 레벨 : " + skillLevel.ToString() + "카드 타입 : " + cardType;
+        cardLevelText.text = $"카드 레벨 : {skillLevel} " + cardType.ToString();
     }
 
     // 버튼 클릭 시 카드 선택 로직 실행
@@ -64,7 +64,7 @@ public class testCard : MonoBehaviour
         if (skillLevel != 3)
         {
             skillLevel++;
-            cardLevelText.text = "카드 레벨 : " + skillLevel.ToString() + "카드 타입 : " + cardType;
+            cardLevelText.text = $"카드 레벨 : {skillLevel} " + cardType.ToString();
         }
     }
 }

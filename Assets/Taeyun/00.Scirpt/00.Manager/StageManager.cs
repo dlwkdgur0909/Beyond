@@ -48,7 +48,7 @@ public class StageManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.D))
         {
             curStage++;
-            stageText.text = "현재 스테이지 : " + curStage.ToString();
+            //stageText.text = "현재 스테이지 : " + curStage.ToString();
         }
     }
 
