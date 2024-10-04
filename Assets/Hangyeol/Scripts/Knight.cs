@@ -21,6 +21,14 @@ public class Knight : Character
         animator = GetComponent<Animator>();
     }
 
+    private void Update()
+    {
+        if (curHp <= 0)
+        {
+            gameObject.SetActive(false);
+        }
+    }
+
     private Transform FindLowestHpEnemy()
     {
         float minHp = Mathf.Infinity;

@@ -48,7 +48,7 @@ public class StageManager : MonoBehaviour
         if (Input.GetKeyDown(KeyCode.D))
         {
             curStage++;
-            //stageText.text = "현재 스테이지 : " + curStage.ToString();
+            stageText.text = "현재 스테이지 : " + curStage.ToString();
         }
     }
 
@@ -80,14 +80,18 @@ public class StageManager : MonoBehaviour
 
     private void SpawnEnemy()
     {
-        int ranEnemy = Random.Range(0, testMonsterPrefabs.Count);
+        // 랜덤 스폰 코드 주석 처리
+        // int ranEnemy = Random.Range(0, testMonsterPrefabs.Count);
+
         for (int i = 0; i < 3; i++)
         {
-            GameObject enemy = Instantiate(testMonsterPrefabs[ranEnemy], testMonsterSpawnTransforms[i].position, Quaternion.identity);
+            // 순서대로 적 스폰
+            int enemyIndex = i % testMonsterPrefabs.Count;
+            GameObject enemy = Instantiate(testMonsterPrefabs[enemyIndex], testMonsterSpawnTransforms[i].position, Quaternion.identity);
             testMonster.Add(enemy.GetComponent<TestEnemy>());
         }
     }
-    
+
     private void SpawnBoss()
     {
         // 보스 생성 함수
